@@ -9,7 +9,7 @@ msg_eq:
 msg_not_eq:
 .ascii "The two  are not equal\n" # length 29
 strnrem:
-.ascii " hi welcome"
+.ascii "hi welcome"
 compare_str1:
 .ascii "Rasam"
 compare_str2:
@@ -39,7 +39,7 @@ loopforcheck:
 addl $1, %ecx
 cmpl $13, %ecx
 jne loop
-
+jmp removecharatfirst
  ifblock:
 cmpb $97, %al
 je vowels
