@@ -81,7 +81,7 @@ cmpb %bl , targetchar
 je addcount
 inc %eax
 cmpl $25 , %eax
-je printcount
+jle loopcount
 
 addcount:
 addl $1 , countchar
