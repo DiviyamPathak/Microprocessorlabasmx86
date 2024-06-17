@@ -1,4 +1,3 @@
-
 .section .data
 str1:
 .ascii "coping with life" # length 36
@@ -7,7 +6,7 @@ string:
 msg_eq:
 .ascii "The two are equal\n" # length 25
 msg_not_eq:
-.ascii "The two  are not equal\n" # length 29
+.ascii "The two are not equal\n" # length 29
 strnrem:
 .ascii "hi welcome"
 compare_str1:
@@ -16,6 +15,7 @@ compare_str2:
 .ascii "Sambar"
 vvowelcount:
 .int 0
+
 .section .bss
     .lcomm strcp 36
 
@@ -31,16 +31,10 @@ addl $1, %ecx
 cmpl $36 , %ecx
 jne copystr
 
+# Count vowels in 'string'
 movl $0, %ecx
 loop:
 movb string(, %ecx, 1), %al
-jmp ifblock
-loopforcheck:
-addl $1, %ecx
-cmpl $13, %ecx
-jne loop
-jmp removecharatfirst
- ifblock:
 cmpb $97, %al
 je vowels
 cmpb $101, %al
@@ -51,9 +45,14 @@ cmpb $111, %al
 je vowels
 cmpb $117, %al
 je vowels
+jmp loopforcheck
 vowels:
 addl $1, vvowelcount
-jmp loopforcheck
+loopforcheck:
+addl $1, %ecx
+cmpl $18, %ecx
+jne loop
+jmp removecharatfirst
 
 removecharatfirst:
 movl $0, %edi
@@ -67,25 +66,26 @@ movb compare_str1(, %ecx, 1), %al
 movb compare_str2(, %ecx, 1), %bl
 cmpb %al, %bl
 jne print_not_equal
+cmpb $0, %al
+je print_equal
 addl $1, %ecx
-cmpl $6, %ecx
-jne compareuntill
+jmp compareuntill
+
+print_equal:
 # printing equal
 movl $4, %eax
 movl $1, %ebx
 leal (msg_eq), %ecx
-movl $26, %edx
+movl $25, %edx
 int $0x80
-
 
 print_not_equal:
 # printing not equal
 movl $4, %eax
 movl $1, %ebx
 leal (msg_not_eq), %ecx
-movl $30, %edx
+movl $29, %edx
 int $0x80
-
 
 exit:
 movl $1, %eax
